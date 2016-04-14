@@ -1,0 +1,52 @@
+
+<div class="detail">
+
+<h1>User Profile</h1>
+<p>Just like FB but better</p>
+		<div class ="row details-body">
+
+					<h2>{{detailUser.name}}</h2>
+					<h3>{{detailUser.email}}</h3>
+					<h1>Pending Tasks</h1>
+		<ul>
+			<li ng-repeat="task in pendingTasks">
+				<p>hi!</p>
+				<div class ="row text-center">
+
+					<div class = "large-4 columns">
+						<a href="#/taskDetail/{{task._id}}">  <!--could pass user but looks gross in url -->
+							<h1>{{task.name}}</h1>
+						</a>
+					</div>
+					<div class = "large-4 columns">
+						<p>{{task.deadline}}</p>
+					</div>
+					<div class = "large-4 columns">
+						<button ng-click="markComplete(task._id)" class="button tiny info">Completed</button>
+					</div>
+				</div>
+			</li>
+		</ul>
+
+		<a ng-click="toggleCompleted()"class="button">Toggle Completed Tasks</a>
+		<div class="completed" id='hideshow' value='hide/show'>
+			<ul>
+				<li ng-repeat="task in completedTasks">
+					<div class ="row text-center">
+
+						<div class = "large-4 columns">
+							<a href="#/taskDetail/{{task._id}}">  <!--could pass user but looks gross in url -->
+								<h1>{{task.name}}</h1>
+							</a>
+						</div>
+						<div class = "large-4 columns">
+							<p>{{task.deadline}}</p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		</div>
+
+</div>

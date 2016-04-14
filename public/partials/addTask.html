@@ -1,0 +1,34 @@
+<h1>Add Task</h1>
+<p>Our next young task to complete!</p>
+
+<div class="list" ng-controller='addTaskController'>		
+	<form>
+	  <div class="row">
+          <div class="small-12 columns">
+          	<span style="color:red;">*</span>
+            <input ng-model="name" type="text" placeholder="name"> 
+            <input ng-model="description" type="text" placeholder="description"> 
+            <span style="color:red;">*</span>
+            <input ng-model="deadline" type="date" placeholder="deadline"> 
+
+            <label>Assigned User
+               <select data-ng-model="assignedUser"
+                data-ng-options="user.name for user in users">                
+              </select>    
+            </label>
+           
+          </div>
+      </div>
+
+
+
+
+  </form>
+
+    <div class="text-center">
+      <button ng-click="addTask()" class="button tiny info">Submit</button>
+    </div>
+
+    <h4>{{displayText}}</h4>
+
+</div>

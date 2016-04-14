@@ -1,0 +1,18 @@
+<div class="detail" ng-controller="taskDetailController">
+
+<h1>Task</h1>
+<p>Gotta get this done</p>
+
+<a href="#/editTask/{{detailTask._id}}" class="button">Edit Task</a>
+
+		<div class ="row details-body">
+
+					<h2>{{detailTask.name}}</h2>
+					<h3>{{detailTask.deadline}}</h3>
+					<h3>{{detailTask.description}}</h3>
+					<label>Assigned To: </label>
+					<h3>{{detailTask.assignedUserName}}</h3>
+
+		</div>
+
+</div>

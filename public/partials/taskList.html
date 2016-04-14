@@ -1,0 +1,60 @@
+<div class="list" ng-controller='taskListController'>	
+<h1>Tasks</h1>
+<p>Really important stuff</p>	
+
+<a href="#/addTask" class="button">Add Task</a>
+
+<form>
+  <div class="row">
+    <div class="large-12 columns">
+      <label>Sort By
+        <select>
+          <option value="dateCreated">dateCreated</option>
+          <option value="deadline">deadline</option>
+          <option value="name">name</option>
+          <option value="assignedUserName">assignedUserName</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-6 columns">
+      <label>Task Type</label>
+      <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Pending</label>
+      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">Completed</label>
+      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">All</label>
+
+    </div>
+       <div class="large-6 columns">
+      <label>Ascend/Descend</label>
+      <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Ascending</label>
+      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">Descending</label>
+    </div>
+  </div>
+</form>
+
+
+
+
+
+    <ul>
+        <li ng-repeat="task in tasks | filter:q | startFrom:currentPage*pageSize | limitTo:pageSize">
+            <a href="#/taskDetail/{{task._id}}">
+			<h3>{{task.name}}</h3>
+			</a>
+			<p>{{task.deadline}}</p>
+			<p>{{task.assignedUserName}}</p>
+			<button ng-click="deleteTask(task._id)" class="button tiny info">Delete Task</button>
+        </li>
+    </ul>
+    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="button tiny info">
+        Previous
+    </button>
+    {{currentPage+1}}/{{numberOfPages()}}
+    <button ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1" class="button tiny info">
+        Next
+    </button>
+
+
+
+</div>

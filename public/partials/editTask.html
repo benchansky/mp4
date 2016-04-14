@@ -1,0 +1,40 @@
+<div class="edit" ng-controller="editTaskController">
+
+<h1>Edit Task</h1>
+<p>Fun times ahead!</p>
+
+
+
+
+
+
+			<form>
+	  <div class="row">
+          <div class="small-12 columns">
+          	<span style="color:red;">*</span>
+            <input ng-model="name" type="text" placeholder="name"> 
+            <input ng-model="description" type="text" placeholder="description"> 
+            <span style="color:red;">*</span>
+            <input ng-model="deadline" type="date" placeholder="deadline"> 
+
+            <label>Assigned User
+               <select data-ng-model="assignedUser"
+                data-ng-options="user.name for user in users track by user._id">                
+              </select>    
+            </label>
+               <div class="large-6 columns">
+		      <label>Completed</label>
+		      <input type="radio" ng-model="completed" name="completedBool" ng-value="true" id="Yes"><label for="Yes">Yes</label>
+		      <input type="radio" ng-model="completed" ng-value="false" id="No"><label for="No">No</label>
+		    </div>
+          </div>
+      </div>
+  </form>
+
+  <div class="text-center">
+      <button ng-click="editTheTask()" class="button tiny info">Submit</button>
+    </div>
+
+
+<h1>{{displayText}}</h1>
+</div>

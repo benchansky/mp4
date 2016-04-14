@@ -1,0 +1,30 @@
+<div class="list" ng-controller='userListController'>	
+<p>hi ben</p>	
+<h1>Users</h1>
+<h2>a list of cool people</h2>
+<a href="#/addUser" class="button">Add User</a>
+
+        
+    
+	<ul >
+		<li ng-repeat="user in users">
+        <div class ="row text-center">
+
+			<div class = "large-4 columns">
+				<a href="#/userDetail/{{user._id}}">  <!--could pass user but looks gross in url -->
+					<h3>{{user.name}}</h3>
+				</a>
+			</div>
+			<div class = "large-4 columns">
+				<p>{{user.email}}</p>
+			</div>
+			<div class = "large-4 columns">
+				<a ng-click="deleteUser(user._id)"class="button">Delete</a>
+			</div>
+		</div>
+
+		</li>
+	</ul>
+
+
+</div>

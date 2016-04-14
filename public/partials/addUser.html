@@ -1,0 +1,25 @@
+<h1>Add User</h1>
+<p>Our next young task-slayah</p>
+
+<div class="list" ng-controller='addUserController'>		
+	<form>
+	  <div class="row">
+          <div class="small-12 columns">
+          	<span style="color:red;">*</span>
+            <input ng-model="name" type="text" placeholder="name"> 
+            <span style="color:red;">*</span>
+            <input ng-model="email" type="email" placeholder="email"> 
+
+          </div>
+      </div>
+
+    <div class="text-center">
+      <button ng-click="addUser()" class="button tiny info">Create User</button>
+    </div>
+
+
+  </form>
+
+{{displayText}}
+
+</div>
