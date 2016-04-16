@@ -21,13 +21,18 @@
 
     <div class ="row text-center">
         <h1>Neat, a Task Manager!!!</h1>
-        <div class = "large-3 large-centered columns">
-            <a href="#/userList" class="button">Users</a>
-            <a  href="#/taskList" class="button">Tasks</a>
-            <a  href="#/settings" class="button">Settings</a>
+                <div class = "large-10 large-right columns">
+
+            <div ng-view></div>
         </div>
+        <div class = "large-2 large-right columns">
+            <a href="#/userList" class="button large">Users</a>
+            <a  href="#/taskList" class="button large">Tasks</a>
+            <a  href="#/settings" class="button large">Settings</a>
+        </div>
+
+
     </div>
-    <div ng-view></div>
 
     <div class ="row text-center">
         <p>Made by: Ben Chansky </p>

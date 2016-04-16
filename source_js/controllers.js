@@ -58,36 +58,62 @@ mp4Controllers.controller('taskListController', ['$scope', '$filter', '$http', '
   $scope.currentPage = 0;
   $scope.pageSize = 10;
   $scope.q = '';
+   $scope.orderList = "name";
+   $scope.ascendDescend=false;
+   $scope.selectedSearch="";
+   $scope.allTasks=[];
+
 
   Tasks.get().success(function(data){
     $scope.tasks = data.data;
+    $scope.allTasks=data.data;
     console.log($scope.tasks.length);
   });
 
  $scope.getData = function () {
       // needed for the pagination calc
       // https://docs.angularjs.org/api/ng/filter/filter
-      return $filter('filter')($scope.tasks, $scope.q)
-     /* 
+      //return $filter('filter')($scope.tasks, $scope.selectedSearch)
+     
        // manual filter
        // if u used this, remove the filter from html, remove above line and replace data with getData()
        
         var arr = [];
-        if($scope.q == '') {
-            arr = $scope.data;
-        } else {
-            for(var ea in $scope.data) {
-                if($scope.data[ea].indexOf($scope.q) > -1) {
-                    arr.push( $scope.data[ea] );
+        if($scope.selectedSearch == "") {
+            arr = $scope.tasks;
+        } else if($scope.selectedSearch=="All") {
+
+            arr=$scope.allTasks;
+
+            
+        }
+        else if($scope.selectedSearch=="Pending"){
+          for(var ea in $scope.allTasks) {
+            //console.log($scope.tasks[ea].completed);
+                if($scope.allTasks[ea].completed==false) {
+                    arr.push( $scope.allTasks[ea] );
                 }
             }
         }
+        else if($scope.selectedSearch=="Completed"){
+            for(var ea in $scope.allTasks) {
+                if($scope.allTasks[ea].completed==true) {
+                    arr.push( $scope.allTasks[ea] );
+                }
+            }
+        }
+        console.log(arr.length);
+        $scope.tasks=arr;
         return arr;
-       */
+       
     }
+
      $scope.numberOfPages=function(){
         return Math.ceil($scope.getData().length/$scope.pageSize);                
     }
+
+    
+
     
 
 
@@ -179,50 +205,74 @@ mp4Controllers.controller('editTaskController', ['$scope', '$http', '$routeParam
       }
       else{
         //pending to complete so remove this task from the old user's pending task list
-        Users.updateUserTasks($scope.detailTask.assignedUser, $scope.detailTask._id, "remove").success(function(data){
-          $scope.displayText("Task has been removed from old user's pending tasks...");
-          Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
-            $scope.displayText="Task has been edited! Success!";
+        if($scope.detailTask.assignedUser!=undefined){
+          Users.updateUserTasks($scope.detailTask.assignedUser, $scope.detailTask._id, "remove").success(function(data){
+            $scope.displayText="Task has been removed from old user's pending tasks...";
+            Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
+              $scope.displayText="Task has been edited! Success!";
+            });
           });
-        });
+        }
+        else{
+          Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
+              $scope.displayText="Task has been edited! Success!";
+            });
+        }
       }
     } 
     else{  //pending chosen
       if($scope.detailTask.completed==true){
         //complete to pending so add this task to the assigned users pending tasks
-        Users.updateUserTasks($scope.assignedUser._id, $scope.detailTask._id, "add").success(function(data){
-          $scope.displayText="Task has been added to user's pending tasks...";
-          Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed,  $scope.assignedUser, $scope.detailTask).success(function(data){
-            $scope.displayText="Task has been edited! Success!";
-          });
-        });
+                if($scope.assignedUser._id!=undefined){
+
+                    Users.updateUserTasks($scope.assignedUser._id, $scope.detailTask._id, "add").success(function(data){
+                      $scope.displayText="Task has been added to user's pending tasks...";
+                      Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed,  $scope.assignedUser, $scope.detailTask).success(function(data){
+                        $scope.displayText="Task has been edited! Success!";
+                      });
+                    });
+                  }
+                  else{
+                    Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed,  $scope.assignedUser, $scope.detailTask).success(function(data){
+                        $scope.displayText="Task has been edited! Success!";
+                      });
+                  }
       }
       else{ //pending to pending ...
-
-        if($scope.assignedUser._id!=$scope.detailTask.assignedUser){  //if user changes then remove task from old user's pending Tasks and add to new users
-          console.log("assigning task to a new user, still a pending task");
-          Users.updateUserTasks($scope.detailTask.assignedUser, $scope.detailTask._id, "remove").success(function(data){
-            $scope.displayText="Task has been removed from old user's pending tasks...";
-            console.log("Task has been removed from old user's pending tasks...");
-            Users.updateUserTasks($scope.assignedUser._id, $scope.detailTask._id, "add").success(function(data){
-              $scope.displayText="Task has been added to user's pending tasks...";
-              console.log("Task has been added to user's pending tasks...");
-              Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
-                 console.log("Task has been edited! Success!");
-                $scope.displayText="Task has been edited! Success!";
+          if($scope.assignedUser._id!=$scope.detailTask.assignedUser){  //if user changes then remove task from old user's pending Tasks and add to new users
+            console.log("assigning task to a new user, still a pending task");
+            Users.updateUserTasks($scope.detailTask.assignedUser, $scope.detailTask._id, "remove").success(function(data){
+              $scope.displayText="Task has been removed from old user's pending tasks...";
+              console.log("Task has been removed from old user's pending tasks...");
+              if($scope.assignedUser._id!=undefined){
+              Users.updateUserTasks($scope.assignedUser._id, $scope.detailTask._id, "add").success(function(data){
+                $scope.displayText="Task has been added to user's pending tasks...";
+                console.log("Task has been added to user's pending tasks...");
+                Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
+                   console.log("Task has been edited! Success!");
+                  $scope.displayText="Task has been edited! Success!";
+              });
             });
+
+          } else{
+            Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
+                               console.log("Task has been edited! Success!");
+                              $scope.displayText="Task has been edited! Success!";
+                          });
+          }
+
+          }).error(function (data) {
+                          console.log("very BAD");
+                          console.log("data");
           });
-        }).error(function (data) {
-                        console.log("very BAD");
-                        console.log("data");
-        });
-        } else{   //just update the task
-          //just update the task, no users are affected
-          Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
-          $scope.displayText="Task has been edited! Success!";
-          });
-        }
-      }
+
+          } else{   //just update the task
+            //just update the task, no users are affected
+            Tasks.updateTask($scope.name,  $scope.description,  $scope.deadline, $scope.completed, $scope.assignedUser, $scope.detailTask).success(function(data){
+            $scope.displayText="Task has been edited! Success!";
+            });
+          }
+        } 
     }
   };
 

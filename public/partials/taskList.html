@@ -2,13 +2,13 @@
 <h1>Tasks</h1>
 <p>Really important stuff</p>	
 
-<a href="#/addTask" class="button">Add Task</a>
+<a href="#/addTask" class="button green-button">Add Task</a>
 
 <form>
   <div class="row">
     <div class="large-12 columns">
       <label>Sort By
-        <select>
+        <select ng-model="orderList">
           <option value="dateCreated">dateCreated</option>
           <option value="deadline">deadline</option>
           <option value="name">name</option>
@@ -20,40 +20,49 @@
   <div class="row">
     <div class="large-6 columns">
       <label>Task Type</label>
-      <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Pending</label>
-      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">Completed</label>
-      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">All</label>
+      <input type="radio" name="Pending" ng-model="selectedSearch" value="Pending" id="Pending"><label for="Pending">Pending</label>
+      <input type="radio" name="Completed" ng-model="selectedSearch"value="Completed" id="Completed"><label for="Completed">Completed</label>
+      <input type="radio" name="All" ng-model="selectedSearch" value="All" id="All"><label for="All">All</label>
 
     </div>
        <div class="large-6 columns">
       <label>Ascend/Descend</label>
-      <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Ascending</label>
-      <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">Descending</label>
+      <input type="radio" ng-model="ascendDescend" name="Ascending" data-ng-value="false" id="Ascending"><label for="Ascending">Ascending</label>
+      <input type="radio" ng-model="ascendDescend" name="Descending" data-ng-value="true" id="Descending"><label for="Descending">Descending</label>
     </div>
   </div>
 </form>
 
 
-
-
-
-    <ul>
-        <li ng-repeat="task in tasks | filter:q | startFrom:currentPage*pageSize | limitTo:pageSize">
-            <a href="#/taskDetail/{{task._id}}">
-			<h3>{{task.name}}</h3>
-			</a>
-			<p>{{task.deadline}}</p>
-			<p>{{task.assignedUserName}}</p>
-			<button ng-click="deleteTask(task._id)" class="button tiny info">Delete Task</button>
-        </li>
-    </ul>
-    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="button tiny info">
+<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="button tiny info">
         Previous
     </button>
     {{currentPage+1}}/{{numberOfPages()}}
     <button ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1" class="button tiny info">
         Next
     </button>
+
+
+    <ul>
+        <li ng-repeat="task in tasks | startFrom:currentPage*pageSize | limitTo:pageSize | orderBy:orderList:ascendDescend">
+     	 <div class="row">
+        <div class = "large-3 columns">
+            <a href="#/taskDetail/{{task._id}}">
+			<h3>{{task.name}}</h3>
+			</a>
+		</div>
+		<div class = "large-3 columns">
+			<p>{{task.deadline}}</p>
+		</div>
+		<div class = "large-3 columns">
+			<p>{{task.assignedUserName}}</p>
+		</div>
+		<button ng-click="deleteTask(task._id)" class="button tiny info red-button">Delete Task</button>
+
+	</div>
+        </li>
+    </ul>
+    
 
 
 

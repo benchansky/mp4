@@ -47,6 +47,7 @@ mp4Services.factory('Users', function($http, $window) {
         updateUserTasks: function(u_id, t_id, remove_or_add){
             console.log("in update user task");
             var baseUrl = $window.sessionStorage.baseurl;
+            //if(u_id!=undefined){
             if(remove_or_add=="remove"){  //remove this t_id from pending tasks for this user
                 console.log("removing task");
                 return $http.get(baseUrl+'/api/users/'+u_id).success(function(data){
@@ -141,6 +142,11 @@ mp4Services.factory('Users', function($http, $window) {
                 });
 
             }
+           /* }
+            else{
+                console.log("user id is undefined");
+                return;
+            }  */
         }
     }
 });
