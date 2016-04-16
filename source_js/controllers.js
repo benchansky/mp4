@@ -393,6 +393,14 @@ mp4Controllers.controller('userDetailController', ['$scope', '$http', '$routePar
 mp4Controllers.controller('addUserController', ['$scope', '$http', 'Users', '$window' , function($scope, $http,  Users, $window) {
   $scope.addUser = function(){
     $scope.displayText = "User added...maybe"
+    if($scope.name=="" || $scope.name==undefined){
+      $scope.displayText = "need to include a name";
+      return;
+    }
+    if($scope.email=="" || $scope.email==undefined){
+      $scope.displayText = "need to include an email";
+      return;
+    }
 
     Users.addUser($scope.name, $scope.email).success(function(data){
       console.log(data);
